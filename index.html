@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZOYA For Glass & Decor Home | الكتالوج الإلكتروني</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #F8FAFC;
+      color: #0F172A;
+    }
+    .emerald-bg {
+      background: linear-gradient(135deg, #042F2E 0%, #063B3A 60%, #094D4B 100%);
+    }
+    .gold-text {
+      color: #D4AF37;
+    }
+    .gold-gradient {
+      background: linear-gradient(135deg, #D4AF37 0%, #F3E5AB 50%, #C59B27 100%);
+    }
+    .card-hover {
+      transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 28px -8px rgba(6, 59, 58, 0.14);
+      border-color: #D4AF37;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F1F5F9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #063B3A;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top Header -->
+  <header class="emerald-bg text-white shadow-xl sticky top-0 z-40 border-b border-[#D4AF37]/30">
+    <div class="max-w-7xl mx-auto px-4 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <!-- Brand -->
+      <div class="flex items-center gap-3.5">
+        <div class="w-14 h-14 rounded-full border-2 border-[#D4AF37] bg-[#042F2E] flex items-center justify-center shadow-md overflow-hidden shrink-0">
+          <!-- يمكنك استبدال هذا بمسار اللوغو الخاص بك مثل: <img src="logo.png" class="w-full h-full object-cover"> -->
+          <div class="text-center leading-none">
+            <span class="block text-2xl font-extrabold gold-text tracking-wider">Z</span>
+            <span class="block text-[9px] text-[#F3E5AB] tracking-widest mt-0.5">ZOYA</span>
+          </div>
+        </div>
+        <div>
+          <h1 class="text-xl md:text-2xl font-extrabold tracking-wide text-white flex items-center gap-2">
+            <span>ZOYA</span>
+            <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#D4AF37]/20 text-[#F3E5AB] border border-[#D4AF37]/40">For Glass & Decor Home</span>
+          </h1>
+          <p class="text-xs md:text-sm text-emerald-100/80 mt-0.5">أرقى موديلات الأثاث والديكور المصنوعة من الإستانلس ستيل 201 بطلاء PVD الذهبي</p>
+        </div>
+      </div>
+
+      <!-- Actions & Cart -->
+      <div class="flex items-center gap-2.5">
+        <button onclick="openSpecsModal()" class="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-emerald-50 text-xs font-semibold border border-white/15 transition">
+          <i data-lucide="shield-check" class="w-4 h-4 text-[#D4AF37]"></i>
+          <span>المواصفات الفنية</span>
+        </button>
+
+        <button onclick="toggleCart()" class="relative flex items-center gap-2 px-4 py-2.5 rounded-xl gold-gradient text-[#042F2E] font-bold text-sm shadow-lg hover:brightness-105 transition">
+          <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+          <span>سلة الطلبات</span>
+          <span id="cartCountBadge" class="bg-[#042F2E] text-[#F3E5AB] text-xs font-extrabold px-2 py-0.5 rounded-full">0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Search & Filter Bar -->
+    <div class="bg-[#042F2E]/90 border-t border-white/10">
+      <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+        <!-- Search Input -->
+        <div class="relative flex-1 max-w-md">
+          <i data-lucide="search" class="w-4 h-4 text-emerald-200/70 absolute right-3.5 top-1/2 -translate-y-1/2"></i>
+          <input
+            type="text"
+            id="searchInput"
+            oninput="filterProducts()"
+            placeholder="ابحث باسم الموديل (مثال: كنسول باريس، ترابيزة، برواز)..."
+            class="w-full bg-white/10 text-white placeholder-emerald-200/60 text-sm rounded-xl pr-10 pl-4 py-2 border border-white/15 focus:outline-none focus:border-[#D4AF37] transition"
+          />
+        </div>
+
+        <!-- Category Pills -->
+        <div id="categoryTabs" class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
+          <button onclick="setCategory('all')" data-cat="all" class="cat-btn active px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition bg-[#D4AF37] text-[#042F2E]">
+            الكل (<span id="count-all">0</span>)
+          </button>
+          <button onclick="setCategory('mirrors')" data-cat="mirrors" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-white/10 text-emerald-100 hover:bg-white/20">
+            مرايات وبراويز
+          </button>
+          <button onclick="setCategory('tables')" data-cat="tables" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-white/10 text-emerald-100 hover:bg-white/20">
+            ترابيزات وسط
+          </button>
+          <button onclick="setCategory('side_tables')" data-cat="side_tables" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-white/10 text-emerald-100 hover:bg-white/20">
+            طقطوقات جانبية
+          </button>
+          <button onclick="setCategory('sets')" data-cat="sets" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-white/10 text-emerald-100 hover:bg-white/20">
+            أطقم متكاملة
+          </button>
+          <button onclick="setCategory('consoles')" data-cat="consoles" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-white/10 text-emerald-100 hover:bg-white/20">
+            كنسولات
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Data Source Status Banner -->
+  <div id="syncBanner" class="hidden bg-emerald-50 border-b border-emerald-200 text-emerald-900 text-xs py-2 px-4 text-center">
+    <span id="syncStatusText">جاري مزامنة الأسعار والمنتجات من Google Sheets...</span>
+  </div>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6">
+    <!-- Stats & Sort Bar -->
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+      <div class="text-sm text-slate-600">
+        عرض <span id="visibleCount" class="font-bold text-[#063B3A]">0</span> موديل
+      </div>
+      <div class="flex items-center gap-2">
+        <label for="sortSelect" class="text-xs text-slate-500 font-semibold">ترتيب حسب:</label>
+        <select id="sortSelect" onchange="filterProducts()" class="bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-700 focus:outline-none focus:border-[#063B3A]">
+          <option value="default">الترتيب الافتراضي</option>
+          <option value="price-asc">السعر: من الأقل للأعلى</option>
+          <option value="price-desc">السعر: من الأعلى للأقل</option>
+          <option value="name">الاسم أبجدياً</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+      <!-- Cards injected via JS -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200/80">
+      <i data-lucide="search-x" class="w-12 h-12 text-slate-300 mx-auto mb-3"></i>
+      <h3 class="text-base font-bold text-slate-700">لا توجد نتائج مطابقة لبحثك</h3>
+      <p class="text-xs text-slate-500 mt-1">جرب البحث بكلمة أخرى أو اختر "الكل" لعرض جميع الموديلات.</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="emerald-bg text-white mt-12 border-t-2 border-[#D4AF37]">
+    <div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+      <div>
+        <h2 class="text-lg font-extrabold gold-text">ZOYA For Glass & Decor Home</h2>
+        <p class="text-xs text-emerald-100/80 mt-1 leading-relaxed">
+          تصنيع وتوريد أرقى قطع الديكور والأثاث المعدني والزجاجي بخامات ستانلس ستيل 201 سماكة 1.25 مم وطلاء PVD مقاوم للصدأ.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-2 text-xs">
+        <span class="font-bold text-[#F3E5AB]">تواصل معنا مباشرة (هاتف وواتساب):</span>
+        <div class="flex flex-wrap gap-3">
+          <a href="https://wa.me/201070090135" target="_blank" class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition">
+            <i data-lucide="phone" class="w-3.5 h-3.5 text-[#D4AF37]"></i>
+            <span dir="ltr">01070090135</span>
+          </a>
+          <a href="https://wa.me/201070090134" target="_blank" class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition">
+            <i data-lucide="phone" class="w-3.5 h-3.5 text-[#D4AF37]"></i>
+            <span dir="ltr">01070090134</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="flex flex-col md:items-end gap-2 text-xs">
+        <span class="font-bold text-[#F3E5AB]">تابعنا على منصات التواصل الاجتماعي:</span>
+        <div class="flex items-center gap-3">
+          <span class="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg">
+            <i data-lucide="facebook" class="w-4 h-4 text-blue-400"></i>
+            <span>ZOYA</span>
+          </span>
+          <span class="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg">
+            <i data-lucide="instagram" class="w-4 h-4 text-pink-400"></i>
+            <span dir="ltr">@ZOYA_for_glass</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Shopping Cart Drawer -->
+  <div id="cartOverlay" onclick="toggleCart()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden"></div>
+  <aside id="cartDrawer" class="fixed top-0 left-0 h-full w-full max-w-md bg-white z-50 shadow-2xl transform -translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="emerald-bg text-white p-4 flex items-center justify-between border-b border-[#D4AF37]/40">
+      <div class="flex items-center gap-2">
+        <i data-lucide="shopping-bag" class="w-5 h-5 text-[#D4AF37]"></i>
+        <h3 class="font-bold text-base">سلة المشتريات وعرض السعر</h3>
+      </div>
+      <button onclick="toggleCart()" class="p-1.5 rounded-lg hover:bg-white/10 transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 space-y-3">
+      <!-- Cart items rendered here -->
+    </div>
+
+    <div class="p-4 border-t border-slate-200 bg-slate-50 space-y-3">
+      <div class="flex items-center justify-between text-sm">
+        <span class="text-slate-600 font-semibold">إجمالي عدد القطع:</span>
+        <span id="cartTotalQty" class="font-bold text-slate-900">0</span>
+      </div>
+      <div class="flex items-center justify-between text-base">
+        <span class="font-bold text-slate-800">الإجمالي التقديري:</span>
+        <span id="cartTotalPrice" class="font-extrabold text-lg text-[#063B3A]">0 ج.م</span>
+      </div>
+
+      <div class="space-y-2 pt-1">
+        <input type="text" id="customerName" placeholder="اسم العميل أو المعرض (اختياري)" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#063B3A]" />
+        <input type="text" id="customerNotes" placeholder="ملاحظات إضافية (مقاسات خاصة، لون طلاء، عنوان...)" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#063B3A]" />
+      </div>
+
+      <div class="grid grid-cols-1 gap-2 pt-1">
+        <button onclick="sendWhatsAppOrder('201070090135')" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md transition">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <span>إرسال الطلب عبر واتساب (01070090135)</span>
+        </button>
+        <button onclick="sendWhatsAppOrder('201070090134')" class="w-full py-2.5 rounded-xl bg-[#063B3A] hover:bg-[#042F2E] text-[#F3E5AB] font-bold text-xs flex items-center justify-center gap-2 transition">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <span>إرسال للرقم البديل (01070090134)</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Technical Specs Modal -->
+  <div id="specsModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border border-[#D4AF37]/40">
+      <div class="emerald-bg text-white p-4 flex items-center justify-between">
+        <h3 class="font-bold text-base flex items-center gap-2">
+          <i data-lucide="award" class="w-5 h-5 text-[#D4AF37]"></i>
+          <span>المواصفات الفنية والخامات</span>
+        </h3>
+        <button onclick="closeSpecsModal()" class="p-1 rounded-lg hover:bg-white/10">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-5 space-y-3 text-sm text-slate-700">
+        <div class="p-3 rounded-xl bg-amber-50/70 border border-amber-200/70 flex items-start gap-3">
+          <i data-lucide="layers" class="w-5 h-5 text-amber-700 shrink-0 mt-0.5"></i>
+          <div>
+            <p class="font-bold text-slate-900">خامة الإستانلس ستيل</p>
+            <p class="text-xs text-slate-600 mt-0.5">جميع القطاعات المستخدمة من الإستانلس ستيل عالي الجودة عيار 201.</p>
+          </div>
+        </div>
+        <div class="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200/70 flex items-start gap-3">
+          <i data-lucide="ruler" class="w-5 h-5 text-emerald-800 shrink-0 mt-0.5"></i>
+          <div>
+            <p class="font-bold text-slate-900">السماكة والمتانة</p>
+            <p class="text-xs text-slate-600 mt-0.5">سماكة القطاعات 1.25 مم لضمان أعلى درجات الثبات والتحمل.</p>
+          </div>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3">
+          <i data-lucide="sparkles" class="w-5 h-5 text-[#C59B27] shrink-0 mt-0.5"></i>
+          <div>
+            <p class="font-bold text-slate-900">تقنية الطلاء (PVD Coating)</p>
+            <p class="text-xs text-slate-600 mt-0.5">طلاء حراري بتقنية PVD يمنح لمعاناً ذهنياً فاخراً ومقاومة فائقة للخدش وتغير اللون.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. إعداد رابط Google Sheets CSV المباشر
+    // ضع رابط CSV المنشور من Google Sheets بين علامتي التنصيص أدناه لتفعيل التحديث التلقائي:
+    // مثال: const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?output=csv";
+    // =========================================================================
+    const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRwqZgGNNK6Zds_6qj1sfECXTshNJb80MCZRF4uuf2gkZ2QKWKOSCYAc3KV8kSuZg/pub?gid=2001084067&single=true&output=csv";
+
+    // =========================================================================
+    // 2. البيانات الافتراضية المفرّغة بالكامل من ملف الـ PDF (129 منتج + مسارات الصور)
+    // تعمل تلقائياً في حال عدم وضع رابط Google Sheets أو عند عدم توفر الإنترنت
+    // =========================================================================
+    let products = [
+  {
+    "id": 1,
+    "name": "برواز خريطة صغير",
+    "price": 1750,
+    "category_ar": "مرايات وبراويز",
+    "category": "mirrors",
+    "color": "ذهبي PVD",
+    "image": "images/001.jpg"
+  },
+  {
+    "id": 2,
+    "name": "برواز خريطة كبير",
+    "price": 2300,
+    "category_ar": "مرايات وبراويز",
+    "category": "mirrors",
+    "color": "ذهبي PVD",
+    "image": "images/002.jpg"
+  },
+  {
+    "id": 3,
+    "name": "برواز سمك",
+    "price": 2700,
+    "category_ar": "مرايات وبراويز",
+    "category": "mirrors",
+    "color": "ذهبي PVD",
+    "image": "images/003.jpg"
+  },
+  {
+    "id": 4,
+    "name": "برواز شمس ثقيل",
+    "price": 2600,
+    "category_ar": "مرايات وبراويز",
+    "category": "mirrors",
+    "color": "ذهبي PVD",
+    "image": "images/004.jpg"
+  },
+  {
+    "id": 5,
+    "name": "برواز إسلامي",
+    "price": 2250,
+    "category_ar": "مرايات وبراويز",
+    "category": "mirrors",
+    "color": "ذهبي PVD",
+    "image": "images/005.jpg"
+  },
+  {
+    "id": 6,
+    "name": "برواز 3 طبقات 1×2",
+    "price": 1800,
+    "category_ar": "مرايات وبراويز",
+    "category": "mirrors",
+    "color": "ذهبي PVD",
+    "image": "images/006.jpg"
+  },
+  {
+    "id": 7,
+    "name": "برواز 3 طبقات 2×2",
+    "price": 1900,
+    "category_ar": "مرايات وبراويز",
+    "category": "mirrors",
+    "color": "ذهبي PVD",
+    "image": "images/007.jpg"
+  },
+  {
+    "id": 8,
+    "name": "برواز سداسي قلب سداسي",
+    "price": 1700,
+    "category_ar": "مرايات وبراويز",
+    "category": "mirrors",
+    "color": "ذهبي PVD",
+    "image": "images/008.jpg"
+  },
+  {
+    "id": 9,
+    "name": "برواز طبقات",
+    "price": 1800,
+    "category_ar": "مرايات وبراويز",
+    "category": "mirrors",
+    "color": "ذهبي PVD",
+    "image": "images/009.jpg"
+  },
+  {
+    "id": 10,
+    "name": "برواز مستطيل ايفيل",
+    "price": 1750,
+    "category_ar": "مرايات وبراويز",
+    "category": "mirrors",
+    "color": "ذهبي PVD",
+    "image": "images/010.jpg"
+  },
+  {
+    "id": 11,
+    "name": "برواز مربع 2 جنب مواسير",
+    "price": 1750,
+    "category_ar": "مرايات وبراويز",
+    "category": "mirrors",
+    "color": "ذهبي PVD",
+    "image": "images/011.jpg"
+  },
+  {
+    "id": 12,
+    "name": "برواز مربعات كبير",
+    "price": 2700,
+    "category_ar": "مرايات وبراويز",
+    "category": "mirrors",
+    "color": "ذهبي PVD",
+    "image": "images/012.jpg"
+  },
+  {
+    "id": 13,
+    "name": "برواز شرائح",
+    "price": 3400,
+    "category_ar": "مرايات وبراويز",
+    "category": "mirrors",
+    "color": "ذهبي PVD",
+    "image": "images/013.jpg"
+  },
+  {
+    "id": 14,
+    "name": "ترابيزة حلق",
+    "price": 2000,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/014.jpg"
+  },
+  {
+    "id": 15,
+    "name": "ترابيزة زجزاج داخلي",
+    "price": 1800,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/015.jpg"
+  },
+  {
+    "id": 16,
+    "name": "ترابيزة مصمطة مفرغة",
+    "price": 3500,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/016.jpg"
+  },
+  {
+    "id": 17,
+    "name": "طقطوقة مصمطة مفرغة",
+    "price": 2500,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/017.jpg"
+  },
+  {
+    "id": 18,
+    "name": "طقم زجزاج داخلي",
+    "price": 4000,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/018.jpg"
+  },
+  {
+    "id": 19,
+    "name": "ترابيزة مستطيلة شاي",
+    "price": 3500,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/019.jpg"
+  },
+  {
+    "id": 20,
+    "name": "ترابيزة W",
+    "price": 2100,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/020.jpg"
+  },
+  {
+    "id": 21,
+    "name": "ترابيزة Y بكورة",
+    "price": 1700,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/021.jpg"
+  },
+  {
+    "id": 22,
+    "name": "ترابيزة 3 V",
+    "price": 1900,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/022.jpg"
+  },
+  {
+    "id": 23,
+    "name": "ترابيزة ايفل سداسي",
+    "price": 2150,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/023.jpg"
+  },
+  {
+    "id": 24,
+    "name": "ترابيزة بطيخة قطاعات مائلة",
+    "price": 2000,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/024.jpg"
+  },
+  {
+    "id": 25,
+    "name": "ترابيزة مواسير بيانو",
+    "price": 1650,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/025.jpg"
+  },
+  {
+    "id": 26,
+    "name": "ترابيزة تويست 1×2",
+    "price": 1900,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/026.jpg"
+  },
+  {
+    "id": 27,
+    "name": "ترابيزة تويست 1×1",
+    "price": 1800,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/027.jpg"
+  },
+  {
+    "id": 28,
+    "name": "ترابيزة تيتانيك",
+    "price": 2000,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/028.jpg"
+  },
+  {
+    "id": 29,
+    "name": "ترابيزة جوهرة",
+    "price": 2000,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/029.jpg"
+  },
+  {
+    "id": 30,
+    "name": "ترابيزة خلية نحل",
+    "price": 3200,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/030.jpg"
+  },
+  {
+    "id": 31,
+    "name": "ترابيزة دايموند",
+    "price": 2000,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/031.jpg"
+  },
+  {
+    "id": 32,
+    "name": "ترابيزة دائرية كور",
+    "price": 1900,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/032.jpg"
+  },
+  {
+    "id": 33,
+    "name": "ترابيزة مواسير مائلة",
+    "price": 1750,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/033.jpg"
+  },
+  {
+    "id": 34,
+    "name": "ترابيزة زجزاج",
+    "price": 1800,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/034.jpg"
+  },
+  {
+    "id": 35,
+    "name": "ترابيزة سداسي هرمي",
+    "price": 2000,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/035.jpg"
+  },
+  {
+    "id": 36,
+    "name": "ترابيزة سلسلة",
+    "price": 1850,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/036.jpg"
+  },
+  {
+    "id": 37,
+    "name": "ترابيزة سلك",
+    "price": 2200,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/037.jpg"
+  },
+  {
+    "id": 38,
+    "name": "ترابيزة سوليتير",
+    "price": 2150,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/038.jpg"
+  },
+  {
+    "id": 39,
+    "name": "ترابيزة شبابيك",
+    "price": 2100,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/039.jpg"
+  },
+  {
+    "id": 40,
+    "name": "ترابيزة شجرة قطاعات",
+    "price": 3000,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/040.jpg"
+  },
+  {
+    "id": 41,
+    "name": "ترابيزة شرايط",
+    "price": 1950,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/041.jpg"
+  },
+  {
+    "id": 42,
+    "name": "ترابيزة قاعدة نجمة",
+    "price": 1650,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/042.jpg"
+  },
+  {
+    "id": 43,
+    "name": "ترابيزة كاربيتشر",
+    "price": 1900,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/043.jpg"
+  },
+  {
+    "id": 44,
+    "name": "ترابيزة ماسة",
+    "price": 1650,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/044.jpg"
+  },
+  {
+    "id": 45,
+    "name": "ترابيزة مربع شعاع",
+    "price": 2000,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/045.jpg"
+  },
+  {
+    "id": 46,
+    "name": "ترابيزة مربعة دوائر",
+    "price": 2000,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/046.jpg"
+  },
+  {
+    "id": 47,
+    "name": "ترابيزة مرسيدس بكورة",
+    "price": 1950,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/047.jpg"
+  },
+  {
+    "id": 48,
+    "name": "ترابيزة مروحة",
+    "price": 2000,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/048.jpg"
+  },
+  {
+    "id": 49,
+    "name": "ترابيزة مستطيلة 3 دور",
+    "price": 1900,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/049.jpg"
+  },
+  {
+    "id": 50,
+    "name": "ترابيزة مستطيلة 4 ركن مواسير",
+    "price": 1800,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/050.jpg"
+  },
+  {
+    "id": 51,
+    "name": "ترابيزة مستطيلة اكسات مواسير",
+    "price": 2100,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/051.jpg"
+  },
+  {
+    "id": 52,
+    "name": "ترابيزة مستطيلة كاربيتشر",
+    "price": 1900,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/052.jpg"
+  },
+  {
+    "id": 53,
+    "name": "ترابيزة مستطيلة هرمي",
+    "price": 1850,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/053.jpg"
+  },
+  {
+    "id": 54,
+    "name": "ترابيزة مودرن",
+    "price": 1900,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/054.jpg"
+  },
+  {
+    "id": 55,
+    "name": "ترابيزة بيضاوي 4 ركن مواسير",
+    "price": 2100,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/055.jpg"
+  },
+  {
+    "id": 56,
+    "name": "ترابيزة مربعة 4 رجل هرمي",
+    "price": 1800,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/056.jpg"
+  },
+  {
+    "id": 57,
+    "name": "ترابيزة نيو شرايط",
+    "price": 2000,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/057.jpg"
+  },
+  {
+    "id": 58,
+    "name": "ترابيزة نيو كاربيتشر",
+    "price": 1750,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/058.jpg"
+  },
+  {
+    "id": 59,
+    "name": "ترابيزة هيرو",
+    "price": 1900,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/059.jpg"
+  },
+  {
+    "id": 60,
+    "name": "ترابيزة وردة قطاعات",
+    "price": 2000,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/060.jpg"
+  },
+  {
+    "id": 61,
+    "name": "ترابيزة مستطيلة ايفل",
+    "price": 1900,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/061.jpg"
+  },
+  {
+    "id": 62,
+    "name": "ترابيزة شجرة مواسير",
+    "price": 1450,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/062.jpg"
+  },
+  {
+    "id": 63,
+    "name": "ترابيزة شجرة مواسير بكورة",
+    "price": 1600,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/063.jpg"
+  },
+  {
+    "id": 64,
+    "name": "ترابيزة مربعات",
+    "price": 7000,
+    "category_ar": "ترابيزات وسط",
+    "category": "tables",
+    "color": "ذهبي PVD",
+    "image": "images/064.jpg"
+  },
+  {
+    "id": 65,
+    "name": "طقم مصمط",
+    "price": 6400,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/065.jpg"
+  },
+  {
+    "id": 66,
+    "name": "طقطوقة رخامي",
+    "price": 3000,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/066.jpg"
+  },
+  {
+    "id": 67,
+    "name": "طقطوقة تيتانك",
+    "price": 1400,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/067.jpg"
+  },
+  {
+    "id": 68,
+    "name": "طقطوقة بطيخة مائلة",
+    "price": 1400,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/068.jpg"
+  },
+  {
+    "id": 69,
+    "name": "طقطوقة بيانو",
+    "price": 1100,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/069.jpg"
+  },
+  {
+    "id": 70,
+    "name": "طقطوقة تويست",
+    "price": 1200,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/070.jpg"
+  },
+  {
+    "id": 71,
+    "name": "طقطوقة جوهرة",
+    "price": 1450,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/071.jpg"
+  },
+  {
+    "id": 72,
+    "name": "طقطوقة دايموند",
+    "price": 1450,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/072.jpg"
+  },
+  {
+    "id": 73,
+    "name": "طقطوقة زجزاج خارجي",
+    "price": 1300,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/073.jpg"
+  },
+  {
+    "id": 74,
+    "name": "طقطوقة سلسلة",
+    "price": 1300,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/074.jpg"
+  },
+  {
+    "id": 75,
+    "name": "طقطوقة سلك",
+    "price": 1600,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/075.jpg"
+  },
+  {
+    "id": 76,
+    "name": "طقطوقة شبابيك علب 2×2",
+    "price": 1600,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/076.jpg"
+  },
+  {
+    "id": 77,
+    "name": "طقطوقة شجرة",
+    "price": 1750,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/077.jpg"
+  },
+  {
+    "id": 78,
+    "name": "طقطوقة كريستالة مصمطة",
+    "price": 2200,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/078.jpg"
+  },
+  {
+    "id": 79,
+    "name": "طقطوقة بيضاوي",
+    "price": 2200,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/079.jpg"
+  },
+  {
+    "id": 80,
+    "name": "طقطوقة شرايط",
+    "price": 1350,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/080.jpg"
+  },
+  {
+    "id": 81,
+    "name": "طقطوقة نيو كاربيتشر",
+    "price": 1200,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/081.jpg"
+  },
+  {
+    "id": 82,
+    "name": "طقطوقة ماسة",
+    "price": 1100,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/082.jpg"
+  },
+  {
+    "id": 83,
+    "name": "طقطوقة كور",
+    "price": 1400,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/083.jpg"
+  },
+  {
+    "id": 84,
+    "name": "طقطوقة نجمة",
+    "price": 1200,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/084.jpg"
+  },
+  {
+    "id": 85,
+    "name": "طقطوقة هرمي",
+    "price": 1400,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/085.jpg"
+  },
+  {
+    "id": 86,
+    "name": "طقطوقة ساعة رملية",
+    "price": 1450,
+    "category_ar": "طقطوقات جانبية",
+    "category": "side_tables",
+    "color": "ذهبي PVD",
+    "image": "images/086.jpg"
+  },
+  {
+    "id": 87,
+    "name": "طقم دائري شعاع",
+    "price": 3000,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/087.jpg"
+  },
+  {
+    "id": 88,
+    "name": "طقم دائري مواسير",
+    "price": 2800,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/088.jpg"
+  },
+  {
+    "id": 89,
+    "name": "طقم سلسلة",
+    "price": 2800,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/089.jpg"
+  },
+  {
+    "id": 90,
+    "name": "طقم دائري مواسير مفتوح",
+    "price": 2800,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/090.jpg"
+  },
+  {
+    "id": 91,
+    "name": "طقم أسد",
+    "price": 3600,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/091.jpg"
+  },
+  {
+    "id": 92,
+    "name": "طقم طقطوقة متداخل عيون",
+    "price": 3250,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/092.jpg"
+  },
+  {
+    "id": 93,
+    "name": "طقم 2 جنب X عدد 5 قطع",
+    "price": 8000,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/093.jpg"
+  },
+  {
+    "id": 94,
+    "name": "طقم ام العيال جنب X عدد 5 قطع",
+    "price": 8000,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/094.jpg"
+  },
+  {
+    "id": 95,
+    "name": "طقم الاسكا عدد 3 قطع",
+    "price": 3250,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/095.jpg"
+  },
+  {
+    "id": 96,
+    "name": "طقم ام العيال دائري",
+    "price": 3700,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/096.jpg"
+  },
+  {
+    "id": 97,
+    "name": "طقم ام العيال مربع",
+    "price": 3750,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/097.jpg"
+  },
+  {
+    "id": 98,
+    "name": "طقم بطيخة قطعتين",
+    "price": 2700,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/098.jpg"
+  },
+  {
+    "id": 99,
+    "name": "طقم بيانو 3 قطع",
+    "price": 3600,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/099.jpg"
+  },
+  {
+    "id": 100,
+    "name": "طقم ترابيزة اكس مواسير قطعتين",
+    "price": 2800,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/100.jpg"
+  },
+  {
+    "id": 101,
+    "name": "طقم ترابيزة فراشة",
+    "price": 2900,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/101.jpg"
+  },
+  {
+    "id": 102,
+    "name": "طقم 80-60",
+    "price": 2100,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/102.jpg"
+  },
+  {
+    "id": 103,
+    "name": "طقم توينز",
+    "price": 2900,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/103.jpg"
+  },
+  {
+    "id": 104,
+    "name": "طقم ليزر",
+    "price": 8250,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/104.jpg"
+  },
+  {
+    "id": 105,
+    "name": "طقم مربع شعاع",
+    "price": 4000,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/105.jpg"
+  },
+  {
+    "id": 106,
+    "name": "طقم مستطيل 4 ركن مواسير",
+    "price": 3000,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/106.jpg"
+  },
+  {
+    "id": 107,
+    "name": "طقم Z",
+    "price": 2600,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/107.jpg"
+  },
+  {
+    "id": 108,
+    "name": "طقم مربع مواسير",
+    "price": 2900,
+    "category_ar": "أطقم متكاملة",
+    "category": "sets",
+    "color": "ذهبي PVD",
+    "image": "images/108.jpg"
+  },
+  {
+    "id": 109,
+    "name": "كنسول 4 دوائر",
+    "price": 6500,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/109.jpg"
+  },
+  {
+    "id": 110,
+    "name": "كنسول باريس",
+    "price": 7500,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/110.jpg"
+  },
+  {
+    "id": 111,
+    "name": "كنسول جوتشي",
+    "price": 5200,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/111.jpg"
+  },
+  {
+    "id": 112,
+    "name": "كنسول ديور",
+    "price": 6200,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/112.jpg"
+  },
+  {
+    "id": 113,
+    "name": "كنسول رينو",
+    "price": 5300,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/113.jpg"
+  },
+  {
+    "id": 114,
+    "name": "كنسول زجزاج",
+    "price": 4900,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/114.jpg"
+  },
+  {
+    "id": 115,
+    "name": "كنسول لفظ الجلالة الله",
+    "price": 7000,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/115.jpg"
+  },
+  {
+    "id": 116,
+    "name": "كنسول نص قوس",
+    "price": 5500,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/116.jpg"
+  },
+  {
+    "id": 117,
+    "name": "كنسول نص قوس داخلي",
+    "price": 7500,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/117.jpg"
+  },
+  {
+    "id": 118,
+    "name": "كنسول شجرة قطاعات",
+    "price": 5500,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/118.jpg"
+  },
+  {
+    "id": 119,
+    "name": "كنسول لوكانز",
+    "price": 5000,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/119.jpg"
+  },
+  {
+    "id": 120,
+    "name": "كنسول U ليزر",
+    "price": 6000,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/120.jpg"
+  },
+  {
+    "id": 121,
+    "name": "كنسول شجرة مواسير",
+    "price": 5500,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/121.jpg"
+  },
+  {
+    "id": 122,
+    "name": "كنسول F16",
+    "price": 3800,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/122.jpg"
+  },
+  {
+    "id": 123,
+    "name": "كنسول بيضاوي 4 ركن مواسير",
+    "price": 4200,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/123.jpg"
+  },
+  {
+    "id": 124,
+    "name": "كنسول 4 رجل V",
+    "price": 3800,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/124.jpg"
+  },
+  {
+    "id": 125,
+    "name": "كنسول خلية نحل",
+    "price": 4500,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/125.jpg"
+  },
+  {
+    "id": 126,
+    "name": "كنسول شانيل",
+    "price": 5400,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/126.jpg"
+  },
+  {
+    "id": 127,
+    "name": "كنسول شعاع",
+    "price": 3800,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/127.jpg"
+  },
+  {
+    "id": 128,
+    "name": "كنسول مستطيل 4 ركن مواسير",
+    "price": 3700,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/128.jpg"
+  },
+  {
+    "id": 129,
+    "name": "كنسول مستطيل هرمي",
+    "price": 3800,
+    "category_ar": "كنسولات",
+    "category": "consoles",
+    "color": "Gold",
+    "image": "images/129.jpg"
+  }
+];
+
+    let currentCategory = 'all';
+    let cart = JSON.parse(localStorage.getItem('zoya_cart') || '[]');
+
+    // Initialize App
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      updateCategoryCounts();
+      filterProducts();
+      renderCart();
+
+      if (GOOGLE_SHEET_CSV_URL && GOOGLE_SHEET_CSV_URL.trim() !== "") {
+        loadFromGoogleSheets(GOOGLE_SHEET_CSV_URL.trim());
+      }
+    });
+
+    // Fetch live data from Google Sheets CSV
+    function loadFromGoogleSheets(url) {
+      const banner = document.getElementById('syncBanner');
+      const statusText = document.getElementById('syncStatusText');
+      banner.classList.remove('hidden');
+
+      Papa.parse(url, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          if (results.data && results.data.length > 0) {
+            const parsed = results.data
+              .filter(row => row.name && row.price)
+              .map((row, index) => ({
+                id: Number(row.id) || (index + 1),
+                name: String(row.name).trim(),
+                price: Number(String(row.price).replace(/[^0-9.]/g, '')) || 0,
+                category_ar: String(row.category_ar || 'منتجات عامة').trim(),
+                category: String(row.category || 'tables').trim(),
+                color: String(row.color || 'ذهبي PVD').trim(),
+                image: String(row.image || `images/${String(index + 1).padStart(3, '0')}.jpg`).trim()
+              }));
+
+            if (parsed.length > 0) {
+              products = parsed;
+              updateCategoryCounts();
+              filterProducts();
+              statusText.textContent = `تمت مزامنة ${products.length} منتج بنجاح من Google Sheets ✓`;
+              setTimeout(() => banner.classList.add('hidden'), 3500);
+            }
+          }
+        },
+        error: function(err) {
+          console.error("Google Sheets Sync Error:", err);
+          statusText.textContent = "تعذر الاتصال بـ Google Sheets، يتم عرض النسخة المحفوظة محلياً.";
+          setTimeout(() => banner.classList.add('hidden'), 4000);
+        }
+      });
+    }
+
+    function updateCategoryCounts() {
+      document.getElementById('count-all').textContent = products.length;
+    }
+
+    function setCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        if (btn.dataset.cat === cat) {
+          btn.classList.remove('bg-white/10', 'text-emerald-100');
+          btn.classList.add('bg-[#D4AF37]', 'text-[#042F2E]', 'font-bold');
+        } else {
+          btn.classList.remove('bg-[#D4AF37]', 'text-[#042F2E]', 'font-bold');
+          btn.classList.add('bg-white/10', 'text-emerald-100');
+        }
+      });
+      filterProducts();
+    }
+
+    function filterProducts() {
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+      const sortBy = document.getElementById('sortSelect').value;
+
+      let filtered = products.filter(p => {
+        const matchesCat = currentCategory === 'all' || p.category === currentCategory;
+        const matchesQuery = p.name.toLowerCase().includes(query) || (p.category_ar && p.category_ar.toLowerCase().includes(query));
+        return matchesCat && matchesQuery;
+      });
+
+      if (sortBy === 'price-asc') {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (sortBy === 'price-desc') {
+        filtered.sort((a, b) => b.price - a.price);
+      } else if (sortBy === 'name') {
+        filtered.sort((a, b) => a.name.localeCompare(b.name, 'ar'));
+      }
+
+      renderProducts(filtered);
+    }
+
+    function renderProducts(list) {
+      const grid = document.getElementById('productsGrid');
+      const empty = document.getElementById('emptyState');
+      document.getElementById('visibleCount').textContent = list.length;
+
+      if (list.length === 0) {
+        grid.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+
+      empty.classList.add('hidden');
+      grid.innerHTML = list.map(p => `
+        <div class="bg-white rounded-2xl border border-slate-200/90 overflow-hidden flex flex-col card-hover group">
+          <div class="relative aspect-[4/3] bg-slate-100 overflow-hidden flex items-center justify-center">
+            <img
+              src="${p.image}"
+              alt="${p.name}"
+              loading="lazy"
+              onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22 viewBox=%220 0 400 300%22><rect width=%22400%22 height=%22300%22 fill=%22%23063B3A%22/><text x=%2250%25%22 y=%2246%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2228%22 font-weight=%22bold%22 fill=%22%23D4AF37%22>ZOYA</text><text x=%2250%25%22 y=%2260%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2213%22 fill=%22%23F3E5AB%22>${encodeURIComponent(p.name)}</text></svg>';"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <span class="absolute top-2.5 right-2.5 bg-[#042F2E]/85 backdrop-blur-xs text-[#F3E5AB] text-[11px] font-semibold px-2.5 py-1 rounded-lg border border-[#D4AF37]/30">
+              ${p.category_ar}
+            </span>
+            <span class="absolute bottom-2.5 left-2.5 bg-white/90 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
+              #${String(p.id).padStart(3, '0')}
+            </span>
+          </div>
+
+          <div class="p-4 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="font-bold text-slate-900 text-base leading-snug group-hover:text-[#063B3A] transition">${p.name}</h3>
+              <p class="text-xs text-slate-500 mt-1 flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-[#D4AF37] inline-block"></span>
+                <span>اللون: ${p.color}</span>
+              </p>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+              <div>
+                <span class="text-[11px] text-slate-400 block">السعر</span>
+                <span class="text-lg font-extrabold text-[#063B3A]">${p.price.toLocaleString()} <small class="text-xs font-bold">ج.م</small></span>
+              </div>
+
+              <button
+                onclick="addToCart(${p.id})"
+                class="px-3.5 py-2 rounded-xl bg-[#063B3A] hover:bg-[#042F2E] text-[#F3E5AB] text-xs font-bold flex items-center gap-1.5 shadow-xs active:scale-95 transition"
+              >
+                <i data-lucide="plus" class="w-3.5 h-3.5 text-[#D4AF37]"></i>
+                <span>أضف للسلة</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    // Cart Functions
+    function addToCart(productId) {
+      const product = products.find(p => p.id === productId);
+      if (!product) return;
+
+      const existing = cart.find(item => item.id === productId);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+      saveAndRenderCart();
+    }
+
+    function updateQty(productId, delta) {
+      const idx = cart.findIndex(item => item.id === productId);
+      if (idx === -1) return;
+      cart[idx].qty += delta;
+      if (cart[idx].qty <= 0) {
+        cart.splice(idx, 1);
+      }
+      saveAndRenderCart();
+    }
+
+    function saveAndRenderCart() {
+      localStorage.setItem('zoya_cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cartItemsContainer');
+      const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+      const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+      document.getElementById('cartCountBadge').textContent = totalQty;
+      document.getElementById('cartTotalQty').textContent = totalQty;
+      document.getElementById('cartTotalPrice').textContent = `${totalPrice.toLocaleString()} ج.م`;
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-16 text-slate-400">
+            <i data-lucide="shopping-cart" class="w-12 h-12 mx-auto mb-2 opacity-40"></i>
+            <p class="text-sm font-semibold">سلة الطلبات فارغة حالياً</p>
+            <p class="text-xs mt-1">اختر الموديلات التي تعجبك لإرسال طلبك عبر واتساب</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = cart.map(item => `
+        <div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+          <div class="flex-1 min-w-0">
+            <h4 class="font-bold text-xs text-slate-900 truncate">${item.name}</h4>
+            <p class="text-xs text-[#063B3A] font-extrabold mt-0.5">${(item.price * item.qty).toLocaleString()} ج.م</p>
+          </div>
+          <div class="flex items-center gap-1.5 bg-white border border-slate-200 rounded-lg p-1">
+            <button onclick="updateQty(${item.id}, -1)" class="w-6 h-6 flex items-center justify-center rounded-md hover:bg-slate-100 text-slate-700 font-bold">-</button>
+            <span class="w-6 text-center text-xs font-bold">${item.qty}</span>
+            <button onclick="updateQty(${item.id}, 1)" class="w-6 h-6 flex items-center justify-center rounded-md hover:bg-slate-100 text-slate-700 font-bold">+</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleCart() {
+      const drawer = document.getElementById('cartDrawer');
+      const overlay = document.getElementById('cartOverlay');
+      const isClosed = drawer.classList.contains('-translate-x-full');
+      if (isClosed) {
+        drawer.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+      } else {
+        drawer.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+    }
+
+    function sendWhatsAppOrder(phone) {
+      if (cart.length === 0) {
+        alert("يرجى إضافة منتج واحد على الأقل إلى السلة أولاً.");
+        return;
+      }
+      const customerName = document.getElementById('customerName').value.trim();
+      const customerNotes = document.getElementById('customerNotes').value.trim();
+      const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+      let msg = `*طلب جديد من كتالوج ZOYA For Glass & Decor Home*%0A`;
+      if (customerName) msg += `*العميل:* ${encodeURIComponent(customerName)}%0A`;
+      msg += `--------------------------%0A`;
+      cart.forEach((item, i) => {
+        msg += `${i + 1}. *${encodeURIComponent(item.name)}* (كود #${String(item.id).padStart(3, '0')})%0A`;
+        msg += `   الكمية: ${item.qty} × ${item.price} = *${item.qty * item.price} ج.م*%0A`;
+      });
+      msg += `--------------------------%0A`;
+      msg += `*الإجمالي الكلي:* ${totalPrice.toLocaleString()} ج.م%0A`;
+      if (customerNotes) msg += `*ملاحظات:* ${encodeURIComponent(customerNotes)}%0A`;
+
+      window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+    }
+
+    function openSpecsModal() {
+      const m = document.getElementById('specsModal');
+      m.classList.remove('hidden');
+      m.classList.add('flex');
+    }
+
+    function closeSpecsModal() {
+      const m = document.getElementById('specsModal');
+      m.classList.add('hidden');
+      m.classList.remove('flex');
+    }
+  </script>
+</body>
+</html>
